@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json())
 
 
-// disneytoys
+
 
 
 
@@ -57,8 +57,6 @@ async function run() {
 }
 
 run().catch(console.dir);
-
-
 
 app.get('/', (req, res) => {
     res.send("Disney toy running")
