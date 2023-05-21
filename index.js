@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 require('dotenv').config()
 const port = process.env.PORT || 5000;
 
@@ -52,9 +52,6 @@ async function run() {
 
         // sorting by asencing and decending
         app.get('/mytoys/:email/data', async (req, res) => {
-
-            // const data = await toyscollection.find({ email: req.params.email }).sort({ price: 1 }).toArray();
-            //     res.send(data);
             try {
                 const { sortOrder } = req.query;
                 console.log(sortOrder);
@@ -73,6 +70,33 @@ async function run() {
                 res.status(500).json({ error: 'Internal Server Error' });
               }
         })
+
+        // for update data
+        app.put("/toys/:id", async (req, res) => {
+          const id = req.params.id;
+          const filter = { _id: new ObjectId(id) };
+            const body = req.body;
+            console.log(body);
+            
+            const updateDoc = {
+              $set: {
+                price: body.price,
+                quantity: body.quantity,
+                description: body.description,
+              },
+            };
+            const result = await toyscollection.updateOne(filter, updateDoc);
+            res.send(result);
+          });
+
+        // //   for delete
+        // app.delete('/updatetoy/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: new ObjectId(id) }
+        //     const result = await toyscollection.deleteOne(query);
+        //     res.send(result);
+        // })
+
 
 
 
