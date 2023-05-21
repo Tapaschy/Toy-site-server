@@ -41,7 +41,9 @@ async function run() {
         })
 
         app.get('/toys', async (req, res) => {
-            const result = await toyscollection.find().toArray();
+          const limit = 20;
+          const sort = { length: -1 };
+            const result = await toyscollection.find().sort(sort).limit(limit).toArray();
             res.send(result)
         })
         // get my toys
